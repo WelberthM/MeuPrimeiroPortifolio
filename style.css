@@ -2,6 +2,8 @@ html{
     background-color: black;
     color: white;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    display: flexbox;
+    
 }
 strong{
     color: blueviolet;
@@ -14,4 +16,6 @@ color: blueviolet;
 
 img{
     width: 550px;
+    
 }
+
