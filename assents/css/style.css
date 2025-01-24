@@ -1,21 +1,23 @@
-html{
+html {
     background-color: black;
     color: white;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    display: flexbox;
     
 }
-strong{
+
+.texto {
+    display: flex;
+    align-items: center;
+}
+
+strong, a {
     color: blueviolet;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-a{
-color: blueviolet;
-}
 
-img{
-    width: 550px;
-    
+img {
+    width: 500px;
+
 }
 
