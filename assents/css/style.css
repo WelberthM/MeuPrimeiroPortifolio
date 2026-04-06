@@ -1,23 +1,888 @@
-html {
-    background-color: black;
-    color: white;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    
+/* ==== DESIGN SYSTEM & VARIABLES ==== */
+/* O :root define variáveis globais do CSS que podemos reutilizar em qualquer lugar.
+   Isso facilita muito na hora de mudar uma cor ou fonte do site inteiro de uma vez só. */
+:root {
+    /* Cores principais - Tema Dark "Profundo" com detalhes brilhantes (Neon) */
+    --bg-main: #060608;
+    /* Cor de fundo principal mais escura (quase preto) */
+    --bg-secondary: #111116;
+    /* Cor de fundo secundária para criar contraste entre as seções */
+    --bg-card: rgba(25, 25, 32, 0.6);
+    /* Cor de fundo levemente transparente para os cards */
+
+    --text-primary: #f0f0f5;
+    /* Cor principal dos textos (um branco levemente suave) */
+    --text-secondary: #a5a5a5;
+    /* Cor secundária para textos menos importantes (um tom de cinza) */
+
+    /* Cores da nossa Identidade (Destaques) */
+    --accent-glow: #8a2be2;
+    /* Roxo neon para dar um efeito "gamer/dev" */
+    --accent-cyan: #00f2fe;
+    /* Ciano claro para criar o efeito de gradiente com o roxo */
+    --gradient-primary: linear-gradient(135deg, var(--accent-glow) 0%, var(--accent-cyan) 100%);
+    /* Criação de um gradiente que mistura o roxo com o ciano num ângulo de 135 graus */
+
+    /* Tipografia (Fonte) */
+    --font-main: 'Outfit', sans-serif;
+    /* Define que a fonte padrão será 'Outfit' e se falhar usa 'sans-serif' genérica */
+
+    /* Bordas e Efeitos Visuais */
+    --border-subtle: rgba(255, 255, 255, 0.05);
+    /* Borda bem suave (branco com 5% de opacidade) apenas para marcar limites */
+    --glass-bg: rgba(6, 6, 8, 0.7);
+    /* Cor de fundo com transparência usada na barra de cima (efeito vidro) */
+    --glass-blur: blur(12px);
+    /* Desfoque aplicado no fundo da barra para completar o efeito de vidro */
+
+    /* Efeito de Sombra Colorida (Neon) */
+    --shadow-neon: 0 0 20px rgba(138, 43, 226, 0.4);
+    /* Cria uma sombra brilhante ao redor de elementos importantes (foco luminoso) */
+
+    /* Transições de Animação */
+    --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* Usado para fazer com que os efeitos de passar o mouse (hover) sejam suaves em vez de duros e secos. */
 }
 
-.texto {
-    display: flex;
-    align-items: center;
+/* ==== RESET GLOBAL ==== */
+/* O asterisco (*) seleciona todos os elementos do site. Serve para tirar margens padrões inseridas pelos navegadores. */
+* {
+    margin: 0;
+    /* Remove as margens externas padrão de tudo */
+    padding: 0;
+    /* Remove os espaçamentos internos padrão de tudo */
+    box-sizing: border-box;
+    /* Faz com que bordas e preenchimentos não aumentem o tamanho total das caixas div */
+    scroll-behavior: smooth;
+    /* Faz com que rolar pelo site até uma seção específica seja lento e suave, não imediato. */
 }
 
-strong, a {
-    color: blueviolet;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+body {
+    font-family: var(--font-main);
+    /* Aplica a fonte definida nas variáveis em todo o texto do site */
+    background-color: var(--bg-main);
+    /* Aplica o fundo escuro do site inteiro */
+    color: var(--text-primary);
+    /* Aplica a cor de texto clara para ler bem pelo fundo escuro */
+    line-height: 1.6;
+    /* Aumenta o espaçamento entre linhas do texto para ficar mais fácil de ler */
+    overflow-x: hidden;
+    /* Impede que exista barra de rolagem para os lados caso algo vaze da largura da tela */
 }
 
+ul {
+    list-style: none;
+    /* Tira as bolinhas que aparecem por padrão nas listas <ul> e <li> */
+}
+
+a {
+    text-decoration: none;
+    /* Tira o sublinhado azul clássico que vem em links (tags <a>) */
+    color: inherit;
+    /* Faz o link herdar a cor do texto do pai (para não virar tudo azul padrão) */
+}
 
 img {
-    width: 500px;
-
+    max-width: 100%;
+    /* Faz imagens ficarem contidas dentro do seu local e não estourarem a tela */
+    display: block;
+    /* Previne comportamentos estranhos de espaçamento inferior nas imagens */
 }
 
+/* ==== LAYOUT UTILS (Classes Reutilizáveis) ==== */
+/* A classe container limita a largura do site nas telas gigantes, mantendo tudo centralizado. */
+.container {
+    max-width: 1200px;
+    /* Limite de crescimento horizontal */
+    margin: 0 auto;
+    /* Margem automática esquerda e direita (Centraliza a caixa) */
+    padding: 0 2rem;
+    /* Espaçamento em volta pra não colar na borda do smartphone */
+}
+
+/* Dá o distanciamento correto (respiro de topo e base) para cada nova área do site */
+.section-padding {
+    padding: 100px 0;
+}
+
+/* Como renderizamos os grandes títulos (h2) de cada área */
+.section-title {
+    font-size: 2.5rem;
+    /* Tamanho grande */
+    font-weight: 800;
+    /* Fica com texto extra gordinho (negrito forte) */
+    margin-bottom: 0.5rem;
+    /* Margem pra baixo do titulo */
+    position: relative;
+    display: inline-block;
+}
+
+/* Adicionando aquela linhazinha colorida estilosa ali abaixo dos títulos com o pseudo-elemento ::after */
+.section-title::after {
+    content: '';
+    /* Elemento invisivel inicialmente */
+    position: absolute;
+    /* Posiciona absolutamente com base no titulo */
+    bottom: -5px;
+    /* Coloca embaixo do texto */
+    left: 0;
+    width: 40%;
+    /* Ocupa só 40% da largura da palavra */
+    height: 3px;
+    /* Espessura minúscula */
+    background: var(--gradient-primary);
+    /* Pinta com o gradiente roxo/ciano */
+    border-radius: 2px;
+}
+
+/* Subtextos que vem embaixo dos grandes títulos */
+.section-subtitle {
+    color: var(--text-secondary);
+    /* Cinza padrão */
+    margin-bottom: 3rem;
+    /* Espaço grandão até os próximos elementos da sção */
+    font-size: 1.1rem;
+}
+
+/* Estilo base dos botões */
+.btn {
+    display: inline-flex;
+    /* Facilita alinhar ícones do lado de texto dentro deles */
+    align-items: center;
+    /* Alinhamento vertical central */
+    gap: 0.5rem;
+    /* Espaço horizontal de 5px mais ou menos entre o texto e icone */
+    padding: 0.8rem 1.8rem;
+    /* Tamanho de estofamento do botão (gordinho) */
+    border-radius: 50px;
+    /* Bordas super redondas "em forma de pilha" */
+    font-weight: 600;
+    /* Fonte em peso médio */
+    transition: var(--transition-smooth);
+    /* Adiciona aquela transição que criamos */
+    cursor: pointer;
+    /* Muda o mouse pra um "dedinho" ao passar em cima */
+    border: none;
+    /* Tira a bordinha cinza feia que botões tem de fábrica */
+    font-family: var(--font-main);
+    font-size: 1rem;
+}
+
+/* Botões de Ação Principal (ex: Ver Projetos) */
+.btn-primary {
+    background: var(--gradient-primary);
+    /* Fica multicolorido (gradiente) */
+    color: #fff;
+    box-shadow: var(--shadow-neon);
+    /* Ganha uma luz acesa ao redor */
+}
+
+/* O que acontece quando passamos o mouse (:hover) nesse botão primário? */
+.btn-primary:hover {
+    transform: translateY(-3px);
+    /* Anima ele subindo levemente pro topo (-3px) dando aspecto 3D */
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.6);
+    /* Brilho neon explode mais forte */
+}
+
+/* Botões Secundários/Menos chamativos (ex: Vamos conversar) */
+.btn-secondary {
+    background: transparent;
+    /* Fundo invisível */
+    border: 1px solid var(--text-secondary);
+    /* Apenas uma linha cinza ao seu de redor */
+    color: var(--text-primary);
+    /* Texto claro */
+}
+
+/* O que acontece quando passamos o mouse no botão secundário? */
+.btn-secondary:hover {
+    background: var(--border-subtle);
+    /* Fundo fica levissimamente cinza translúcido */
+    border-color: var(--text-primary);
+    /* Linha clareia pra branco ao invés de cinza */
+    transform: translateY(-3px);
+    /* E tambem levanta no mouse 3D */
+}
+
+/* ==== HEADER & NAVIGATION (O TOPO DO SITE) ==== */
+/* A barra navegação `<header>` */
+header {
+    position: fixed;
+    /* Fica pregada travada no topo da tela não importa quanto darmos scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* Ocupa a largura total da janela */
+    z-index: 1000;
+    /* Fica por "cima de todos os outros elementos do site" que estão abaixos dele. */
+    background: var(--glass-bg);
+    /* O fundo super transparente escurinho... */
+    backdrop-filter: var(--glass-blur);
+    /* ... que aplica um efeito de "vidro embaçado" incrível na área de trás */
+    border-bottom: 1px solid var(--border-subtle);
+    /* Corta a parte debaixo com linha sutil */
+    transition: var(--transition-smooth);
+}
+
+/* Ajuda a criar estrutura horizontal entre a logo e os links */
+.navbar {
+    display: flex;
+    /* Cria um layout caixa flexível horizontal */
+    justify-content: space-between;
+    /* Joga a Logo pro canto mais longe a esquerda e os menus pro canto direito */
+    align-items: center;
+    /* Centraliza as letras certinho entre cima e embaixo */
+    height: 80px;
+    /* Define estritamente a grossura padrão do header */
+}
+
+/* Classe da Logo em escrito (<Welberth />) */
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    /* Aqui fazemos um truque insano para PINTAR TEXTO COM DEGRADÊ e não o fundo... */
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    /* Recorta o fundo no formato texto */
+    -webkit-text-fill-color: transparent;
+    /* Pinta a cor original texto invisivel. Restou só o fundão recortado! */
+}
+
+/* O encapsulamento em volta dos menus de navegação do topo... */
+.nav-links {
+    display: flex;
+    /* Põe eles lado a lado */
+    gap: 2rem;
+    /* 2 rem (aprox 32px) de margem entre "Home", "Sobre", etc */
+}
+
+/* Os Links das opções no header */
+.nav-links a {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    /* Textinho apagado */
+    transition: var(--transition-smooth);
+    position: relative;
+    /* Serve de âncora para criaremos os efeitos em cima com position absolute */
+}
+
+.nav-links a:hover {
+    color: var(--text-primary);
+    /* Fica bem branco quando eu chego com meu mouse na zona do link */
+}
+
+/* Essa parte cria uma linha minúscula INVISIVEL debajo do link... */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    /* Largura Zero (invisivel) */
+    height: 2px;
+    background: var(--gradient-primary);
+    /* Puxa sua corzinha arcoiris (roxociano) */
+    transition: var(--transition-smooth);
+}
+
+/* Como mágica, ao por mouse: aquela linhazinha invisível ali em cima cresce 100% esticando!! */
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Aquele 'hambúrguer' para celular (os três risquinhos pro menu) */
+.mobile-menu-icon {
+    display: none;
+    /* Fica invisível no Desktop!! Não precisamo ver isso tendo tela cheia. */
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--text-primary);
+}
+
+/* ==== HERO SECTION (O TELA INICIAL BEM GRANDONA) ==== */
+/* Seção principal Home */
+.hero {
+    min-height: 100vh;
+    /* Garante tomar no mínimo exatamente 100% da visualização do navegador vertical/cheia */
+    display: flex;
+    /* Modo flexivel verticalizado.. */
+    align-items: center;
+    /* Ficar ao centro verticalmente de toda a janela visivel. */
+    padding-top: 80px;
+    /* Damos 80px superior precaver do Header FIXO não esconder nós. */
+    position: relative;
+    /* Necessário para segurar os absolute das partículas dentro dela */
+    overflow: hidden;
+    /* Impede que as partículas voem pra fora do limite da section */
+}
+
+/* =====================================================================
+   Imagem de fundo focada, enorme e transparente:
+   O ::before é uma div fantasma criada somente pelo css, antes do conteúdo existir.
+   Aplicamos sua foto de perfil aqui e não no HTML pra podermos criar a mágica do 'opaco p&b'!
+   ===================================================================== */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* O endereço da foto. Damos 'voltas' de pastas com ../ até chegar nela. Cuidado com espaços usando %20 para segurança.*/
+    background-image: url('../../Elements/img/Foto%20de%20perfil.png');
+    
+    /* Para resolver o problema de Zoom E dos espaços vazios: */
+    /* Voltamos pro 'cover' para acabar com os buracos. */
+    background-size: cover;
+    /* E para o zoom não cortar sua cabeça, focamos ele 30% pro topo do eixo Y em vez de ser Centro/Centro puro. */
+    background-position: center 30%;
+    
+    /* MÁGICA: Pra foto não parecer um 'quadrado solto duro', aplicamos uma máscara que apaga as beiradas da foto, mesclando elas lindamente com o fundo escuro do próprio site! */
+    -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%);
+    mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%);
+    
+    z-index: 0;                   /* Permanece no fundo competindo junto com as suas partículas de código. */
+    
+    /* Animação Efeito Pre-Load */
+    opacity: 0;                   /* A foto nasce invisível no milisegundo zero */
+    animation: preload-foto 2.5s ease-out forwards; /* Demora 2.5s e fica ('forwards') no estado final */
+}
+
+/* Criando o efeito de fade-in suaaaaave estilo 'pre-loading' p/ sua foto */
+@keyframes preload-foto {
+    0% {
+        opacity: 0;
+        filter: grayscale(100%) blur(15px); /* Nasce invisível, P&B e muito Desfocada */
+        transform: scale(1.05);             /* Um leve zoom in pra fora dando profundidade */
+    }
+    100% {
+        opacity: 0.15;                      /* O que você me pediu: Bem fraquinha pra não brigar com seu Textão. */
+        filter: grayscale(100%) blur(0px);  /* Remove o desfoque, se torna nítida e P&B luxuoso! */
+        transform: scale(1);                /* Fica em 100% de escala base perfeita pra não causar zoom estranho */
+    }
+}
+
+/* Posição Textos */
+.hero-content {
+    display: grid;
+    /* Usa layout de grade invisivel (grid) */
+    grid-template-columns: 1fr;
+    /* Excluímos a 2º coluna! Agora é 1 Única Fracao (1fr) ocupando 100% da sua tela visível. */
+    gap: 4rem;
+    align-items: center;
+    position: relative;
+    /* Para não ficar sobposto pelo z-index da animação */
+    z-index: 2;
+    text-align: center; /* Joga todo o 'Texto Grande' para o Meiuca da tela perfeitamente! */
+    justify-items: center; /* Diz pras caixas menores (como O bloco de botões) irem pro centro do Layout também. */
+}
+
+/* =====================================================================
+   Base das Animações Otimizadas (Símbolos voando ao fundo)
+   ===================================================================== */
+
+/* Esta classe é a "Caixa Invisível" que guarda todas as partículas. */
+.hero-bg-animations {
+    position: absolute;
+    /* Faz a caixa flutuar por cima de tudo na tela de forma livre, ignorando o fluxo normal do texto */
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* Ocupa a largura inteira da seção pai (da Hero) */
+    height: 100%;
+    /* Ocupa a altura inteira */
+    overflow: hidden;
+    /* Muito Importante: Se alguma partícula voar pra fora dos limites dessa caixa, corte ela! Não deixe criar barra de rolagem. */
+    z-index: 0;
+    /* O 'z-index' funciona como camadas de papelão. O z-index 0 diz que essa caixa fica no 'fundo', atrás das fotos e textos (z-index maiores que 0). */
+    pointer-events: none;
+    /* Como isso está flutuando invisível pela tela inteira, se o usuário tentar clicar num botão atras das partículas, não vai conseguir. O pointer-events: none faz o mouse ser 'fantasma' para essa tela, deixando você clicar nas coisas livremente. */
+}
+
+/* Essa classe define o visual principal de TODOS os sinaizinhos soltos (os < >, os { }, etc) */
+.code-particle {
+    position: absolute;
+    /* Tira elas do lugar, podemos colocar em qualquer (X,Y) da tela que quisermos */
+    bottom: -100px;
+    /* Inicia todas escondidinhas PRA BAIXO do rodapé da caixa, como se estivessem num porão (-100px pra baixo de zero) */
+    color: var(--accent-glow);
+    /* Puxa aquela nossa cor de Roxo Neon das variáveis */
+    font-family: monospace;
+    /* 'monospace' é as fontes estilo Matrix (onde cada letra ocupa exatamente o mesmo tamanho) */
+    font-size: 2rem;
+    font-weight: bold;
+    opacity: 0;
+    /* Começam invisíveis 100% (transparência de vidro limpo) */
+    user-select: none;
+    /* Se você tentar com o mouse 'arrastar/selecionar texto azul' nesses icones flutuantes, não vai conseguir. */
+    animation: float-code linear infinite;
+    /* Regra Mestra: Pega a animação que ensinei lá embaixo chamada "float-code", executa ela numa velocidade constante ("linear"), e quando terminar, repita PRA SEMPRE ("infinite") */
+}
+
+/* =====================================================================
+   Matemática Mágica Prática:
+   Fazer todas as partículas parecerem soltas se mexendo sozinhas em tempos e velocidades esquisitas (randomicas).
+   usando o "nth-child".
+   -> pseudo seletor "nth-child(numero)" significa: Pegue o Ítem NºX dessa lista e só mexa nele!
+   ===================================================================== */
+
+.code-particle:nth-child(1) {
+    /* Filha 1: Fica de pé ali perto dos 10% esquerdos da tela e dura 15 segundos para completar uma volta */
+    left: 10%;
+    animation-duration: 15s;
+    font-size: 1.5rem;
+    animation-delay: 0s; /* Liga logo de cara (0 atraso). */
+}
+
+.code-particle:nth-child(2) {
+    left: 30%;
+    animation-duration: 22s;
+    font-size: 3rem;
+    animation-delay: 2s; /* Atraso de 2 seg antes de ela nascer no porão (-100px). */
+    color: var(--accent-cyan);
+}
+
+.code-particle:nth-child(3) {
+    left: 50%;
+    animation-duration: 18s;
+    font-size: 1.2rem;
+    animation-delay: 4s;
+}
+
+.code-particle:nth-child(4) {
+    left: 70%;
+    animation-duration: 25s;
+    font-size: 2.2rem;
+    animation-delay: 1s;
+    opacity: 0.3;
+}
+
+.code-particle:nth-child(5) {
+    left: 85%;
+    animation-duration: 20s;
+    font-size: 1.8rem;
+    animation-delay: 5s;
+    color: var(--accent-cyan);
+}
+
+.code-particle:nth-child(6) {
+    left: 20%;
+    animation-duration: 28s;
+    font-size: 2.5rem;
+    animation-delay: 7s;
+}
+
+.code-particle:nth-child(7) {
+    left: 90%;
+    animation-duration: 17s;
+    font-size: 1rem;
+    animation-delay: 0s;
+}
+
+/* =====================================================================
+   O Filme da Animação: @keyframes
+   "Keyframes" significa os quadros-chave (cenas) de uma gravação.
+   Ele diz o que acontece no instante ZERO, meio e Fim de um tempo!
+   ===================================================================== */
+@keyframes float-code {
+    0% {
+        /* Cena 1: A Animação COMEÇOU na linha de tempo as 0 horas (tempo zerado) */
+        /* TranslateY move os objetos no eixo vertical(Y). Zerado (0) significa ele parado quieto nos "-100px bottom" que setamos em code-partiche. */
+        transform: translateY(0) rotate(0deg); /* Zero rotações no começo */
+        opacity: 0;
+        /* As partículas ainda invisiveis transparentes. */
+    }
+
+    10% {
+        /* Cena 2: Chegando aos 10% do tempo se passando... */
+        opacity: 0.15;
+        /* Elas deixam de ser vidro invisivel e viram fantasmas levinhos aparecendo p nos! */
+    }
+
+    90% {
+        /* Cena 3: Aos 90% percorrido, as coisas são mantidas! Tudo indo suave com as transparencias! */
+        opacity: 0.15;
+    }
+
+    100% {
+        /* Cena 4 FINAL (Fim da brincadeira): */
+        /* Translate Y (-120vh) Joga os simbolos 1.2x O TAMANHO DA ALTURA DA SUA TELA em direção para cima (negativo).
+           Rotate (360) Ele rodopiou os braços em espiral completos (graus) enquanto voava la p/ cima!! */
+        transform: translateY(-120vh) rotate(360deg);
+        opacity: 0;
+        /* E já que ele estava perto de morrer (estourou limites), ele torna-se invisível na cena final pra desaparecer do mapa perfeitamente! */
+    }
+}
+
+/* Esse Olá */
+.greeting {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--accent-cyan);
+    font-size: 1.2rem;
+}
+
+/* O subtitulo H1 principal (título máximo do site na hierarquia google) */
+.hero h1 {
+    font-size: 4.5rem;
+    /* Tamanho agressivamente MAIOR P/ CHAMAR ATENÇÃO como combinamos! Foco super forte do portfólio no SEU TEXTO. */
+    font-weight: 800;
+    /* Super preto */
+    line-height: 1.1;
+    /* Espaçamento das quebra linhas um tico perto */
+    margin-bottom: 1.5rem;
+}
+
+/* A classe para grifar qualquer trecho texto! Utiliza a tecnica Gradient clip Text anterior. */
+.highlight {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Aqui as descrições da hero... */
+.hero .subtitle {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    /* Subtexto um nada maiorzinho tb p acompanhar o h1 gigante*/
+    max-width: 600px;
+    margin: 0 auto 2.5rem auto; /* Magia 'auto' para centralizar caixas dentro do pai! E ter margin base de 2.5rem normal. */
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    /* Força os botões irem p/ meio da div mãe! */
+    gap: 1rem;
+    /* Dá os espaço entre o botao primario e os secundário para dar respiro lateral */
+}
+
+/* Imagem e os truquezinhos da sua seção antigas eram aqui e as APAGAMOS PQ A FOTO AGORA É DE FUNDO OPACO ::before !! */
+
+/* ==== SOBRE SECTION ==== */
+.sobre {
+    background-color: var(--bg-secondary);
+    /* Destaca "Sobre mim" ao clarear o seu fundo em contraste ao topo */
+}
+
+.sobre-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Separa em dois quadrantes (50% esquerda/50% da Direita) iguais 1fracao/1fracao. */
+    gap: 4rem;
+    margin-top: 3rem;
+}
+
+.sobre-text p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.skills h3 {
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+}
+
+/* Listinha/Grid dos Cartoeszinhos das suas Skillsets Html, Css... */
+.skills-grid {
+    display: grid;
+    /* Aqui diz o seguinte: Tente colocar colunas mínimas q sejam de 130px... Se sobrar mto espaço vai enchendo até completar! O auto vai resolver p vc. */
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 1rem;
+}
+
+/* Uma habíilidade em Cartao individualmente.. */
+.skill-card {
+    background: var(--bg-card);
+    /* Aquela cor com meio translúcida */
+    border: 1px solid var(--border-subtle);
+    /* Fiozinho minimo cinza */
+    padding: 1.5rem 1rem;
+    border-radius: 12px;
+    /* Cantinhos quadradinho arredondado. */
+    text-align: center;
+    transition: var(--transition-smooth);
+    /* Da animacao aos clicks/hover */
+}
+
+.skill-card i {
+    font-size: 2.5rem;
+    /* O tamanho fonte das logozinha em fosfor */
+    color: var(--accent-glow);
+    margin-bottom: 0.5rem;
+}
+
+.skill-card span {
+    display: block;
+    /* Força a ele descer p baixo (ele por ser SPAN é lateral na essência, o display:block o impurra linha à linha). */
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* O HOVER do cartãozinho */
+.skill-card:hover {
+    transform: translateY(-5px);
+    /* Como nos botões, também dá uma empurradinha pro ceu/cima */
+    border-color: var(--accent-glow);
+    /* Ele estava com borda fraquinha, ele reacende com linha rosa/violeta */
+    background: rgba(138, 43, 226, 0.1);
+    /* Joga uma aguinha levemente arrocheada do fundo tb para acender tudo junto = Magia */
+}
+
+/* ==== PROJETOS SECTION ==== */
+.projetos-grid {
+    display: grid;
+    /* Faz as colunas ocuparem uns generosos 350px e não amonturarem! Auto fill a mesma coisa */
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2.5rem;
+}
+
+/* Area de Caixa/Corpo Projeto */
+.projeto-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    overflow: hidden;
+    /* ESSENCIAL: Impede que aquela div "projeto-img" ali em cima derrube o shape das quinas redondas da box passando/vazando para fora */
+    transition: var(--transition-smooth);
+}
+
+.projeto-card:hover {
+    transform: translateY(-10px);
+    /* Dá a mesma alavancada bonita para superior (+ forte: -10) */
+    border-color: var(--text-secondary);
+    /* Dá realce mais clarinho pela borda toda */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    /* Põe uma luz morta forte escura projetado o card inteiro! *Profundidade 3D* visual. */
+}
+
+/* Local que vai ter Prints/Thumbs deles*/
+.projeto-img-placeholder {
+    height: 220px;
+    background: #1a1a24;
+    display: flex;
+    flex-direction: column;
+    /* Diz pra jogar p centro com Colunas e nao Horizontal! A logo "icone" vai pra cima depois os subtitulos pra por baixo dele em "torre".*/
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 3rem;
+    border-bottom: 1px solid var(--border-subtle);
+    /* Cria divisoria de barriga/quebra da regiao Textos x Fotos aqui... */
+}
+
+.projeto-img-placeholder p {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* Resto Textos dele..  */
+.projeto-info {
+    padding: 2rem;
+}
+
+/*  Local de Tags (CSS , Tailwind ... HTML )   */
+.projeto-tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Config tags do projetos (como pinguinhas ou pills) */
+.projeto-tags span {
+    font-size: 0.75rem;
+    /* Mini  txt */
+    padding: 0.2rem 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50px;
+    color: var(--accent-cyan);
+    font-weight: 600;
+}
+
+.projeto-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.projeto-info p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.projeto-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.projeto-links a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: var(--transition-smooth);
+}
+
+.projeto-links a:hover {
+    color: var(--accent-glow);
+}
+
+/* ==== CONTATO SECTION ==== */
+.contato {
+    /* Ao inves do cinza chapado eu puxei o fundo usando LinearGradiente no background do final p ficar bonitinho transicionando escurecendo ao fundo puro escuro */
+    background: linear-gradient(0deg, var(--bg-secondary) 0%, var(--bg-main) 100%);
+    text-align: center;
+}
+
+.contato-content p {
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 1.5rem auto 3rem;
+    font-size: 1.1rem;
+}
+
+.email-btn {
+    font-size: 1.2rem;
+    padding: 1rem 2.5rem;
+    /* Botao email do contato bem rechonchudo maior q os btn-primary */
+}
+
+/* ==== FOOTER / RODAPÉ ==== */
+footer {
+    background: var(--bg-secondary);
+    padding: 3rem 0 2rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    /* Força tudo (Logo... Depois Icones) todos ficarem num alinhamento vertical único */
+    align-items: center;
+    /* Centrão */
+    gap: 1.5rem;
+}
+
+.footer-logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.social-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.social-links a {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    transition: var(--transition-smooth);
+    background: var(--bg-card);
+    /* Eu botei o Witdh (Largura) e Height (Altura) exatos do mesmo tamanho.. Depois borderRadius de 50%. Com Isso crio caixinhas/botoes 100% Círcular com os icones bem no meio (display flex e aligns q os botam ai). */
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid var(--border-subtle);
+}
+
+.social-links a:hover {
+    color: #fff;
+    background: var(--accent-glow);
+    /* Os circlos azuis de social ganham o neon na lata! */
+    border-color: var(--accent-glow);
+    transform: translateY(-3px);
+}
+
+.copyright {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+/* ==== SCROLL REVEAL UTILITY CLASSES ==== */
+/* Esta clase "reveal" foi feita p/ atuar junto ao JavaScript no 'main.js'!.
+   A gente define ela num estado de opacidade = 0  (invisivel) e meio que flutuando rebaixado no eixo Y
+Para gerar a tensao e magia quando chamamos a js function de Scroll. */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+    /* Vai demorar durar qse 1 segundo os pop ups revelarem! Devagar p dar graca. */
+}
+
+/* Quando o js calcular que vc encostou perto pra ler aquele item que tá apagado e com a class Reveal ele vai forçar por código o navegador dar Ponto Final a essa tag botando em ativa (dá a ClassActive), e ela ganha essas propriedades abaixo de ficar Viva = Opacidade e Volta Y(0) */
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==== RESPONSIVE DESIGN (BEM IMPORTANTE!) ==== */
+/* Aqui fazemos um Media Query. Tudo que estiver ai dentro soh será interpretado para quem tiver num max width de tela até 992px (Telas de Tablets e celurares deitados ou velhos laptos mto simples) */
+@media (max-width: 992px) {
+
+    /* Antes o Grid era Left direito pra texto e direito pra foto. 
+       Isso mata ele! Agora soh se tem 1 Fracao apenas de Grade. E alinhei tudo centricamente */
+    .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 3rem;
+    }
+
+    /* Quando cai e vira 1 coluna só... Por logica a foto devia tá debaixo do Texto lá na frente da fila que colocamos HTML (order 1 é foto de cima), com CSS ele reajusta puxando p/ cima (order 1 vai ser sempre na fila mais prioritário que 2). */
+    .hero-text {
+        order: 2;
+    }
+
+    .hero-image {
+        order: 1;
+    }
+
+    .hero .subtitle {
+        margin: 0 auto 2.5rem;
+        /* Isso é p subtitluo n fica colado feio mas ter margem no mobile tb em 'auto' centrais */
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    /* O painel Sobre tinha 2 Fracoes igual no Hero, caido a 1Fr tambem  */
+    .sobre-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Media  pra quem eh MENOR que 768px -> Celulares em pé normais! */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        /* Em um cenário real, aqui entraria um menu mobile javascript, nós matamos escondemos para não bugar a tela encolhida dos links no mob */
+    }
+
+    /* Lembra q o Menu de Mobile q estava escondidão ninguem acha  antes no layout do Desktop e era display None ? Ao bater tela 768px  ele Volta a Ganhar Vida! Ele substitui .nav-links!*/
+    .mobile-menu-icon {
+        display: block;
+    }
+
+    /* Encolhendo Fonte q la q era Gigaaante se n ia matar o cara e vazar  pra lados (3.5 Rem vira 2.5Rem)  */
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    /* Até o grid projeto de 350x vai ficar só 1Fr sem dar briga de responsividade no celularzinho horizontal se enchendo o ecrã. */
+    .projetos-grid {
+        grid-template-columns: 1fr;
+    }
+}

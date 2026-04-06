@@ -1,23 +1,179 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portifólio Welberth</title>
-    <link rel="stylesheet" href="assents/css/style.css"
+    <title>Welberth Almeida | Front-end Developer</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons (para ícones modernos e clean) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="assents/css/style.css">
+</head>
+
 <body>
-    <header></header>
+    <!-- HEADER / NAVBAR -->
+    <header id="header">
+        <nav class="navbar container">
+            <a href="#" class="logo">&lt;Welberth /&gt;</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#sobre">Sobre Mim</a></li>
+                <li><a href="#projetos">Projetos</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+            <div class="mobile-menu-icon">
+                <i class="ph ph-list"></i>
+            </div>
+        </nav>
+    </header>
+
     <main>
-        <div class="texto">
-            <h1>Eleve seu negócio digital a outro nível <strong>com um Front-end de qualidade!</strong></h1>
-                     <p class="texto">Olá! Sou Welberth Almeida, desenvolvedor Front-end com especialidade em React, HTML e CSS. Ajudo pequenos negócios e designers a colocarem em prática boas ideias. Vamos conversar?</p>
-        <div class="container">
-            <img src="Elements/rosto.jpg" alt="Welberth">
-            <a id="link-referencia" href="https://www.instagram.com/WelberthMorais" target="_blank">instagram</a> <a href="http://Github.com/WelberthM" target="_blank">Github</a>
-        </div>
-                            
+        <!-- HERO SECTION -->
+        <section id="home" class="hero">
+            <!-- Animações em CSS (Otimizadas / Nativas) -->
+            <div class="hero-bg-animations">
+                <div class="code-particle">&lt;/&gt;</div>
+                <div class="code-particle">{ }</div>
+                <div class="code-particle">()</div>
+                <div class="code-particle">#</div>
+                <div class="code-particle">/* */</div>
+                <div class="code-particle">&lt; &gt;</div>
+                <div class="code-particle">;</div>
+            </div>
+
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <p class="greeting">Olá, me chamo <span>Welberth Almeida</span> 👋</p>
+                    <h1>Eleve seu negócio digital a outro nível com um <span class="highlight">Front-end de
+                            qualidade!</span></h1>
+                    <p class="subtitle">Desenvolvedor Front-end com especialidade em React, HTML e CSS.</p>
+
+                    <div class="hero-buttons">
+                        <a href="#projetos" class="btn btn-primary">Ver Projetos <i class="ph ph-arrow-right"></i></a>
+                        <a href="#contato" class="btn btn-secondary">Vamos conversar</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOBRE SECTION -->
+        <section id="sobre" class="sobre section-padding">
+            <div class="container">
+                <h2 class="section-title">Sobre Mim</h2>
+                <div class="sobre-content">
+                    <div class="sobre-text">
+                        <p>Sou apaixonado por construir interfaces intuitivas e dinâmicas que proporcionam a melhor
+                            experiência para os usuários. Com foco em tecnologias front-end, transformo designs
+                            complexos em código limpo, semântico e altamente performático.</p>
+                        <p>Gosto de estar sempre atualizado com as tendências do mercado e busco criar aplicações que
+                            sejam não apenas funcionais, mas visualmente deslumbrantes.</p>
+                    </div>
+
+                    <div class="skills">
+                        <h3>Minhas Habilidades Essenciais</h3>
+                        <div class="skills-grid">
+                            <div class="skill-card"><i class="ph ph-file-html"></i><span>HTML5</span></div>
+                            <div class="skill-card"><i class="ph ph-file-css"></i><span>CSS3</span></div>
+                            <div class="skill-card"><i class="ph ph-file-js"></i><span>JavaScript</span></div>
+                            <div class="skill-card"><i class="ph ph-atom"></i><span>React</span></div>
+                            <div class="skill-card"><i class="ph ph-git-branch"></i><span>Git & GitHub</span></div>
+                            <div class="skill-card"><i class="ph ph-paint-brush"></i><span>Design Responsivo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJETOS SECTION -->
+        <section id="projetos" class="projetos section-padding">
+            <div class="container">
+                <h2 class="section-title">Feitos Recentes</h2>
+                <p class="section-subtitle">Aqui estão alguns dos projetos em que venho trabalhando ou estudando.</p>
+
+                <div class="projetos-grid">
+                    <!-- Card Projeto 1 -->
+                    <article class="projeto-card">
+                        <div class="projeto-img-placeholder">
+                            <i class="ph ph-image"></i>
+                            <p>Imagem do Projeto</p>
+                        </div>
+                        <div class="projeto-info">
+                            <div class="projeto-tags">
+                                <span>React</span>
+                                <span>CSS Modules</span>
+                            </div>
+                            <h3>Landing Page Corporativa</h3>
+                            <p>Uma landing page completa focada em conversão, desenvolvida com React e animações
+                                fluidas.</p>
+                            <div class="projeto-links">
+                                <a href="#" target="_blank"><i class="ph ph-github-logo"></i> Repo</a>
+                                <a href="#" target="_blank"><i class="ph ph-link"></i> Live Preview</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card Projeto 2 -->
+                    <article class="projeto-card">
+                        <div class="projeto-img-placeholder">
+                            <i class="ph ph-image"></i>
+                            <p>Imagem do Projeto</p>
+                        </div>
+                        <div class="projeto-info">
+                            <div class="projeto-tags">
+                                <span>HTML</span>
+                                <span>JS</span>
+                                <span>API</span>
+                            </div>
+                            <h3>Dashboard Dinâmico</h3>
+                            <p>Painel de controle com consumo de API externa mostrando gráficos em tempo real.</p>
+                            <div class="projeto-links">
+                                <a href="#" target="_blank"><i class="ph ph-github-logo"></i> Repo</a>
+                                <a href="#" target="_blank"><i class="ph ph-link"></i> Live Preview</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTATO SECTION -->
+        <section id="contato" class="contato section-padding">
+            <div class="container contato-content">
+                <h2 class="section-title">Pronto para começarmos?</h2>
+                <p>Estou disponível para novos projetos e oportunidades profissionais. Me mande uma mensagem através das
+                    minhas redes ou do meu email.</p>
+
+                <a href="mailto:seuemail@exemplo.com" class="btn btn-primary email-btn"><i
+                        class="ph ph-envelope-simple"></i> Diga Olá</a>
+            </div>
+        </section>
     </main>
-    <footer></footer>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">&lt;Welberth /&gt;</div>
+            <div class="social-links">
+                <a href="https://github.com/WelberthM" target="_blank" aria-label="GitHub"><i
+                        class="ph ph-github-logo"></i></a>
+                <a href="https://www.instagram.com/WelberthMorais" target="_blank" aria-label="Instagram"><i
+                        class="ph ph-instagram-logo"></i></a>
+                <!-- Adicione seu LinkedIn aqui depois -->
+                <a href="#" target="_blank" aria-label="LinkedIn"><i class="ph ph-linkedin-logo"></i></a>
+            </div>
+            <p class="copyright">© 2024 Welberth Almeida. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="assents/js/main.js"></script>
 </body>
 
 </html>
