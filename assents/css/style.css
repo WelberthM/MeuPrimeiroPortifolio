@@ -331,36 +331,45 @@ header {
     width: 100%;
     height: 100%;
     /* O endereço da foto. Damos 'voltas' de pastas com ../ até chegar nela. Cuidado com espaços usando %20 para segurança.*/
-    background-image: url('../../Elements/img/Foto%20de%20perfil.png');
-    
+    background-image: url('../../Elements/img/Background.png');
+
     /* Para resolver o problema de Zoom E dos espaços vazios: */
     /* Voltamos pro 'cover' para acabar com os buracos. */
     background-size: cover;
     /* E para o zoom não cortar sua cabeça, focamos ele 30% pro topo do eixo Y em vez de ser Centro/Centro puro. */
     background-position: center 30%;
-    
+
     /* MÁGICA: Pra foto não parecer um 'quadrado solto duro', aplicamos uma máscara que apaga as beiradas da foto, mesclando elas lindamente com o fundo escuro do próprio site! */
-    -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%);
-    mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%);
-    
-    z-index: 0;                   /* Permanece no fundo competindo junto com as suas partículas de código. */
-    
+    -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 80%);
+    mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 80%);
+
+    z-index: 0;
+    /* Permanece no fundo competindo junto com as suas partículas de código. */
+
     /* Animação Efeito Pre-Load */
-    opacity: 0;                   /* A foto nasce invisível no milisegundo zero */
-    animation: preload-foto 2.5s ease-out forwards; /* Demora 2.5s e fica ('forwards') no estado final */
+    opacity: 0;
+    /* A foto nasce invisível no milisegundo zero */
+    animation: preload-foto 2.5s ease-out forwards;
+    /* Demora 2.5s e fica ('forwards') no estado final */
 }
 
 /* Criando o efeito de fade-in suaaaaave estilo 'pre-loading' p/ sua foto */
 @keyframes preload-foto {
     0% {
         opacity: 0;
-        filter: grayscale(100%) blur(15px); /* Nasce invisível, P&B e muito Desfocada */
-        transform: scale(1.05);             /* Um leve zoom in pra fora dando profundidade */
+        filter: grayscale(100%) blur(15px);
+        /* Nasce invisível, P&B e muito Desfocada */
+        transform: scale(1.05);
+        /* Um leve zoom in pra fora dando profundidade */
     }
+
     100% {
-        opacity: 0.15;                      /* O que você me pediu: Bem fraquinha pra não brigar com seu Textão. */
-        filter: grayscale(100%) blur(0px);  /* Remove o desfoque, se torna nítida e P&B luxuoso! */
-        transform: scale(1);                /* Fica em 100% de escala base perfeita pra não causar zoom estranho */
+        opacity: 0.15;
+        /* O que você me pediu: Bem fraquinha pra não brigar com seu Textão. */
+        filter: grayscale(100%) blur(0px);
+        /* Remove o desfoque, se torna nítida e P&B luxuoso! */
+        transform: scale(1);
+        /* Fica em 100% de escala base perfeita pra não causar zoom estranho */
     }
 }
 
@@ -375,8 +384,10 @@ header {
     position: relative;
     /* Para não ficar sobposto pelo z-index da animação */
     z-index: 2;
-    text-align: center; /* Joga todo o 'Texto Grande' para o Meiuca da tela perfeitamente! */
-    justify-items: center; /* Diz pras caixas menores (como O bloco de botões) irem pro centro do Layout também. */
+    text-align: center;
+    /* Joga todo o 'Texto Grande' para o Meiuca da tela perfeitamente! */
+    justify-items: center;
+    /* Diz pras caixas menores (como O bloco de botões) irem pro centro do Layout também. */
 }
 
 /* =====================================================================
@@ -433,14 +444,16 @@ header {
     left: 10%;
     animation-duration: 15s;
     font-size: 1.5rem;
-    animation-delay: 0s; /* Liga logo de cara (0 atraso). */
+    animation-delay: 0s;
+    /* Liga logo de cara (0 atraso). */
 }
 
 .code-particle:nth-child(2) {
     left: 30%;
     animation-duration: 22s;
     font-size: 3rem;
-    animation-delay: 2s; /* Atraso de 2 seg antes de ela nascer no porão (-100px). */
+    animation-delay: 2s;
+    /* Atraso de 2 seg antes de ela nascer no porão (-100px). */
     color: var(--accent-cyan);
 }
 
@@ -490,7 +503,8 @@ header {
     0% {
         /* Cena 1: A Animação COMEÇOU na linha de tempo as 0 horas (tempo zerado) */
         /* TranslateY move os objetos no eixo vertical(Y). Zerado (0) significa ele parado quieto nos "-100px bottom" que setamos em code-partiche. */
-        transform: translateY(0) rotate(0deg); /* Zero rotações no começo */
+        transform: translateY(0) rotate(0deg);
+        /* Zero rotações no começo */
         opacity: 0;
         /* As partículas ainda invisiveis transparentes. */
     }
@@ -548,7 +562,8 @@ header {
     font-size: 1.2rem;
     /* Subtexto um nada maiorzinho tb p acompanhar o h1 gigante*/
     max-width: 600px;
-    margin: 0 auto 2.5rem auto; /* Magia 'auto' para centralizar caixas dentro do pai! E ter margin base de 2.5rem normal. */
+    margin: 0 auto 2.5rem auto;
+    /* Magia 'auto' para centralizar caixas dentro do pai! E ter margin base de 2.5rem normal. */
 }
 
 .hero-buttons {
