@@ -70,20 +70,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (mobileIcon) {
         mobileIcon.addEventListener('click', () => {
-            // Um toggle simples, para produção idealmente adicionariamos uma classe.
-            if(navLinks.style.display === 'flex') {
-                navLinks.style.display = 'none';
+            navLinks.classList.toggle('mobile-active');
+        });
+
+        // FECHAR MENU AO CLICAR EM UMA OPÇÃO (Apenas telas Mobile)
+        const mobileLinks = navLinks.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navLinks.classList.remove('mobile-active');
+                }
+            });
+        });
+    }
+
+    // === BOTÃO VOLTAR AO TOPO ===
+    const btnTop = document.getElementById('btn-top');
+    if (btnTop) {
+        window.addEventListener('scroll', () => {
+            // Conta os pixels: Se descer mais de 400px o botão aparece
+            if (window.scrollY > 400) {
+                btnTop.classList.add('show');
             } else {
-                navLinks.style.display = 'flex';
-                navLinks.style.flexDirection = 'column';
-                navLinks.style.position = 'absolute';
-                navLinks.style.top = '80px';
-                navLinks.style.left = '0';
-                navLinks.style.width = '100%';
-                navLinks.style.background = 'var(--bg-secondary)';
-                navLinks.style.padding = '2rem';
-                navLinks.style.borderBottom = '1px solid var(--border-subtle)';
+                btnTop.classList.remove('show');
             }
+        });
+
+        btnTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
     }
 

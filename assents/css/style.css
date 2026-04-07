@@ -152,36 +152,80 @@ img {
 }
 
 .btn-primary {
-    background: var(--gradient-primary);
-
+    position: relative;
+    overflow: hidden;
+    /* Corta o gradiente gigante giratório pra ele não vazar no formato do botão! */
+    background: var(--bg-main);
+    /* Fundo preenchido escuro para dar contraste ao brilho */
     color: #fff;
-    box-shadow: var(--shadow-neon);
+    box-shadow: none;
+    /* Retira a sombra estática */
+    z-index: 1;
+    /* Importante pro texto não ficar embaixo da borda */
+}
 
+/* A energia rodando (Arco Iris ou Gradiente) */
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    /* Uma placa bem larga garantindo cobrir o tamanho de botões cumpridos ao girar */
+    width: 250%;
+    height: 400%;
+    top: -150%;
+    left: -75%;
+    /* O formato conic-gradient como uma pizza cria a cor girando como um radar */
+    background: conic-gradient(transparent,
+            transparent,
+            var(--accent-glow),
+            #00f2fe,
+            #ff00ff,
+            transparent);
+    animation: giro-neon 3s linear infinite;
+    z-index: -2;
+    /* Fica afundado lá atrás do texto */
+}
+
+/* Um recorte de cartão cobrindo quase tudo, sobrando 2px que revelam a borda de luz */
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    /* A largura da "borda" iluminada */
+    background: var(--bg-secondary);
+    border-radius: 50px;
+    z-index: -1;
 }
 
 .btn-primary:hover {
     transform: translateY(-3px);
+    /* Ao passar o mouse, além da cordinha circulando, o filete acende um reflexo */
+    box-shadow: 0 0 25px rgba(138, 43, 226, 0.4);
+}
 
-    box-shadow: 0 0 30px rgba(138, 43, 226, 0.6);
+@keyframes giro-neon {
+    0% {
+        transform: rotate(0deg);
+    }
 
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .btn-secondary {
     background: transparent;
-
-    border: 1px solid var(--text-secondary);
-
+    border: 1px solid rgba(138, 43, 226, 0.4); /* Retornando para a base Roxa Padrão! */
     color: var(--text-primary);
-
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.05); /* Brilho de repouso no roxo */
+    transition: var(--transition-smooth);
 }
 
 .btn-secondary:hover {
-    background: var(--border-subtle);
-
-    border-color: var(--text-primary);
-
+    background: rgba(138, 43, 226, 0.1);
+    border-color: var(--accent-glow); /* Roxo Neon Padrão do site */
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
     transform: translateY(-3px);
-
+    color: #fff;
 }
 
 /* ==== HEADER & NAVIGATION (O TOPO DO SITE) ==== */
@@ -218,12 +262,15 @@ header {
 .logo {
     font-size: 1.5rem;
     font-weight: 800;
+    color: var(--accent-glow);
+    text-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+    letter-spacing: 1px;
+    transition: var(--transition-smooth);
+}
 
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-
-    -webkit-text-fill-color: transparent;
-
+.logo:hover {
+    color: #fff; /* Acende mais claro no hover */
+    text-shadow: 0 0 20px rgba(138, 43, 226, 0.8), 0 0 30px rgba(0, 242, 254, 0.5);
 }
 
 .nav-links {
@@ -233,36 +280,89 @@ header {
 
 }
 
-.nav-links a {
+.nav-links a:not(.nav-btn) {
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--text-secondary);
-
     transition: var(--transition-smooth);
     position: relative;
-
+    padding-bottom: 5px;
+    /* Dá espaço suave pra linha */
 }
 
-.nav-links a:hover {
+.nav-links a:not(.nav-btn):hover {
     color: var(--text-primary);
-
 }
 
-.nav-links a::after {
+.nav-links a:not(.nav-btn)::after {
     content: '';
     position: absolute;
     bottom: -5px;
     left: 0;
     width: 0;
-
     height: 2px;
-    background: var(--gradient-primary);
+    /* A LINHA RETA QUE FLUI NEON */
+    background: linear-gradient(90deg, transparent, var(--accent-glow), #00f2fe, #ff00ff, transparent);
+    background-size: 200% 100%;
+    animation: linha-neon 2s linear infinite;
+    transition: width 0.3s ease;
+}
 
+.nav-links a:not(.nav-btn):hover::after {
+    width: 100%;
+}
+
+@keyframes linha-neon {
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
+}
+
+/* Criando uma versão "Suave" mas com a animação de girar do botão primário */
+.nav-btn {
+    position: relative;
+    overflow: hidden;
+    padding: 0.4rem 1.2rem;
+    border-radius: 50px;
+    color: var(--text-primary) !important;
+    background: transparent;
+    z-index: 1;
+    display: inline-flex;
+    font-size: 0.95rem;
+    font-weight: 600;
     transition: var(--transition-smooth);
 }
 
-.nav-links a:hover::after {
-    width: 100%;
+.nav-btn::before {
+    content: '';
+    position: absolute;
+    width: 250%;
+    height: 400%;
+    top: -150%;
+    left: -75%;
+    background: conic-gradient(transparent, transparent, var(--accent-glow), #00f2fe, #ff00ff, transparent);
+    animation: giro-neon 3s linear infinite;
+    z-index: -2;
+}
+
+.nav-btn::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    /* Espessura de 2px de borda de energia */
+    background: var(--bg-main);
+    /* Tampa o meio 100% solido preto */
+    border-radius: 50px;
+    z-index: -1;
+}
+
+.nav-btn:hover {
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
+    transform: translateY(-2px);
 }
 
 .mobile-menu-icon {
@@ -557,69 +657,164 @@ header {
 
 .skills-grid {
     display: grid;
-
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    /* Um pouquinho mais de espaço pras caixas de texto grandes */
+    gap: 1.2rem;
 }
 
 .skill-card {
-    background: var(--bg-card);
+    position: relative;
+    background: transparent;
+    border: none;
+    padding: 1rem 0.8rem;
+    /* Um pouco mais alto pra abrigar tudo perfeitamente */
+    border-radius: 8px;
 
-    border: 1px solid var(--border-subtle);
-
-    padding: 1.5rem 1rem;
-    border-radius: 12px;
+    /* Centramento Flex Absoluto */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    /* Espaço exato e matemático entre o ícone e letra */
 
     text-align: center;
     transition: var(--transition-smooth);
+    z-index: 1;
+    overflow: hidden;
+}
 
+.skill-card i,
+.skill-card span {
+    position: relative;
+    z-index: 2;
+    /* Fica acima da máscara */
 }
 
 .skill-card i {
-    font-size: 2.5rem;
-
+    font-size: 3rem;
+    /* Aumentar um pouquinho o ícone para ele mandar no espaço */
     color: var(--accent-glow);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
+    /* Margem substituída pelo 'gap' pra ser perfeito */
 }
 
 .skill-card span {
     display: block;
-
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 500;
+    /* Levemente menos agressivo que o 600 para dar leveza */
+    font-size: 0.95rem;
+    /* Um pouco maior pra ler melhor */
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.skill-card:hover, .skill-card.active-glow {
+.skill-card::before {
+    content: '';
+    position: absolute;
+    width: 250%;
+    height: 250%;
+    top: -75%;
+    left: -75%;
+    background: conic-gradient(transparent, transparent, var(--accent-glow), #00f2fe, #ff00ff, transparent);
+    animation: giro-neon 3s linear infinite;
+    z-index: -2;
+    opacity: 0;
+    /* Invisível até dar hover/active */
+    transition: opacity 0.3s ease;
+}
+
+.skill-card::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    /* Linha finura de 1px */
+    background: var(--bg-secondary);
+    /* TEM que ser sólido senão a luz entra no meio! */
+    border-radius: 12px;
+    z-index: -1;
+    transition: var(--transition-smooth);
+}
+
+/* O giro maluco da Beirada só aparece quando passa o mouse (HOVER) como você pediu! */
+.skill-card:hover::before {
+    opacity: 1;
+}
+
+/* O script aleatório ainda muda a corzinha de fundo e pula de forma suave, sem ativar a cobrinha rodando */
+.skill-card:hover::after,
+.skill-card.active-glow::after {
+    background: #1a1525;
+    /* Fica só com a chapinha um roxo escuro solido */
+}
+
+.skill-card:hover,
+.skill-card.active-glow {
     transform: translateY(-5px);
-    border-color: var(--accent-glow);
-    background: rgba(138, 43, 226, 0.1);
-    box-shadow: 0 0 15px rgba(138, 43, 226, 0.2); /* Extra brilho pro efeito piscar */
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.2);
 }
 
 /* ==== PROJETOS SECTION ==== */
 .projetos-grid {
     display: grid;
-
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2.5rem;
 }
 
 .projeto-card {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-subtle);
+    position: relative;
+    background: transparent;
+    border: none;
     border-radius: 16px;
+    padding: 1px;
+    /* Garante que a foto e conteúdo respeite o fio de luz de 1 pixel! */
     overflow: hidden;
-
     transition: var(--transition-smooth);
+    z-index: 1;
+}
+
+.projeto-card::before {
+    content: '';
+    position: absolute;
+    width: 250%;
+    height: 250%;
+    top: -75%;
+    left: -75%;
+    background: conic-gradient(transparent, transparent, var(--accent-glow), #00f2fe, var(--accent-cyan), transparent);
+    animation: giro-neon 4s linear infinite;
+    z-index: -2;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.projeto-card::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--bg-secondary);
+    border-radius: 15px;
+    /* Raio menor pra acompanhar o arredondamento interno */
+    z-index: -1;
+}
+
+.projeto-card>* {
+    position: relative;
+    z-index: 2;
+    /* Garante que fotos/textos fiquem por cima do fundo da máscara */
+}
+
+.projeto-img-placeholder {
+    border-radius: 15px 15px 0 0;
+    /* Arredondar a foto de cima para se encaixar na máscara! */
 }
 
 .projeto-card:hover {
     transform: translateY(-10px);
-
-    border-color: var(--text-secondary);
-
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
 
+.projeto-card:hover::before {
+    opacity: 1;
 }
 
 .projeto-img-placeholder {
@@ -640,7 +835,8 @@ header {
 .projeto-img-placeholder img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Faz a foto picotar a sobra para não espremer/distorcer */
+    object-fit: cover;
+    /* Faz a foto picotar a sobra para não espremer/distorcer */
     display: block;
 }
 
@@ -719,24 +915,37 @@ header {
 
 /* ==== FOOTER / RODAPÉ ==== */
 footer {
-    background: var(--bg-secondary);
-    padding: 3rem 0 2rem;
-    border-top: 1px solid var(--border-subtle);
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, #08050e 100%);
+    padding: 3.5rem 0 2rem;
+    border-top: 1px solid rgba(138, 43, 226, 0.1);
+    position: relative;
+}
+
+/* Fio de luz centralizado no topo do footer marcando o fim do site */
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 250px; 
+    height: 1px;
+    background: var(--gradient-primary);
+    box-shadow: 0 0 20px 2px rgba(138, 43, 226, 0.5);
 }
 
 .footer-content {
     display: flex;
     flex-direction: column;
-
     align-items: center;
-
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
 .footer-logo {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 800;
-    color: var(--text-primary);
+    color: var(--accent-glow); /* Usa a cor roxa diretamente para não ficar claro nas letras */
+    text-shadow: 0 0 15px rgba(138, 43, 226, 0.5); /* Mantém o brilho mas em volta da cor fechada */
+    letter-spacing: 1px;
 }
 
 .social-links {
@@ -748,23 +957,26 @@ footer {
     font-size: 1.5rem;
     color: var(--text-secondary);
     transition: var(--transition-smooth);
-    background: var(--bg-card);
+    background: transparent;
 
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    border: 1px solid var(--border-subtle);
+    /* Borda sutil aroxaeda com sombra projetada pra dar uma estética 3d! */
+    border: 1px solid rgba(138, 43, 226, 0.3);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
 .social-links a:hover {
     color: #fff;
-    background: var(--accent-glow);
-
+    background: rgba(138, 43, 226, 0.1);
     border-color: var(--accent-glow);
-    transform: translateY(-3px);
+    /* Um verdadeiro acendimento nas redes sociais! */
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.5), inset 0 0 10px rgba(138, 43, 226, 0.3);
+    transform: translateY(-5px) scale(1.05); /* Pula mais que antes e aumenta sutilmente */
 }
 
 .copyright {
@@ -822,7 +1034,19 @@ footer {
 @media (max-width: 768px) {
     .nav-links {
         display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        /* Voltando para a versão sólida super escura para garantir total legibilidade por cima dos outros elementos! */
+        background: var(--bg-main); 
+        padding: 2rem;
+        border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+    }
 
+    .nav-links.mobile-active {
+        display: flex;
     }
 
     .mobile-menu-icon {
@@ -840,4 +1064,44 @@ footer {
     .projetos-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* ==== BOTÃO VOLTAR AO TOPO ==== */
+#btn-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    color: var(--accent-glow); /* Roxo Neon! */
+    border: 1px solid rgba(138, 43, 226, 0.3);
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 999;
+    
+    /* Configuração inicial invisível */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+#btn-top.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+#btn-top:hover {
+    background: rgba(138, 43, 226, 0.15);
+    border-color: var(--accent-glow);
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+    transform: translateY(-5px);
+    color: #fff;
 }
